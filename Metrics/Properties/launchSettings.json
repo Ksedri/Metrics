@@ -5,7 +5,8 @@
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "JWT__KEY": "super_secret_mega_secret_the_best_secret"
+        "JWT__KEY": "super_secret_mega_secret_the_best_secret",
+        "ConnectionStrings__DefaultConnection": "Host=10.8.0.1;Port=5433;Database=metrics_auth;Username=developer;Password=ay*kfmO2M~"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "http://localhost:5244"

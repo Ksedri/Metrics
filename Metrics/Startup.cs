@@ -1,8 +1,12 @@
 ﻿
+using Metrics.Models;
+using Metrics.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace Metrics
 {
@@ -43,6 +47,10 @@ namespace Metrics
             services.AddScoped<IContext, Context>();
 
             services.AddEndpointsApiExplorer();
+            services.AddDbContext<AppDbContext>(options =>
+                       options.UseNpgsql(_configuration["ConnectionStrings:DefaultConnection"]));
+
+            services.AddScoped<IUserService, UserService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Metrics API", Version = "v1" });
@@ -70,9 +78,11 @@ namespace Metrics
             });
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, AppDbContext dbContext)
         {
             if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
+
+            dbContext.Database.Migrate();
 
             app.UseRouting();
 
